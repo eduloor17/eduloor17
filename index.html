@@ -76,6 +76,11 @@
             border-radius: 50%; /* Optional: make the image circular */
             margin-right: 20px; /* Space between image and text */
         }
+        .visitor-counter {
+            margin-top: 20px;
+            font-size: 1.2em;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -104,11 +109,19 @@
             <h2>LinkedIn</h2>
             <p>Connect with me on <a href="https://www.linkedin.com/in/eduardojloor/" target="_blank">LinkedIn</a>.</p>
         </section>
+        <div class="visitor-counter" id="visitorCounter"></div>
     </div>
     <footer>
         <p>&copy; 2025 Eduardo Loor. All rights reserved.</p>
     </footer>
     <script>
+        // Visitor counter logic
+        let visitorCount = localStorage.getItem('visitorCount') ? parseInt(localStorage.getItem('visitorCount')) : 0;
+        visitorCount++;
+        localStorage.setItem('visitorCount', visitorCount);
+        document.getElementById('visitorCounter').innerText = `Number of visitors: ${visitorCount}`;
+
+        // Header hide/show on scroll
         let lastScrollTop = 0;
         const header = document.getElementById("header");
         window.addEventListener("scroll", function() {
