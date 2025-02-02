@@ -5,7 +5,7 @@ Email: [eduloor17@gmail.com] (mailto:eduloor17@gmail.com)
 
 <a href="https://www.linkedin.com/in/eduardojloor/"><img src="https://custom-icon-badges.demolab.com/badge/LinkedIn-0A0A0A?style=for-the-badge&logo=linkedin-white&logoColor=fff" alt="LinkedIn Badge"></a> 
 <a href="https://eduardojloor.me/"><img src="https://img.shields.io/badge/Website-0A0A0A?style=for-the-badge&logo=react&logoColor=white" alt="My Website"></a> 
-<a href="https://eduardojloor.me/Resume.pdf"><img src="https://img.shields.io/badge/Resume-0A0A0A?style=for-the-badge&logo=readme&logoColor=fff" alt="Resume"></a> 
+<a href="https://eduardojloor.me/files/Resume.pdf"><img src="https://img.shields.io/badge/Resume-0A0A0A?style=for-the-badge&logo=readme&logoColor=fff" alt="Resume"></a> 
 
 ## About Me [![](https://raw.githubusercontent.com/aregtech/areg-sdk/master/docs/img/pin.svg)](#about-me)
 
