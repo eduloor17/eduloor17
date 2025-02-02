@@ -38,7 +38,7 @@
         }
         .container {
             max-width: 800px;
-            margin: 80px auto 0; /* Space for the fixed header */
+            margin: 100px auto 0; /* Increased space for the fixed header */
             padding: 20px;
             background: white;
             border-radius: 8px;
@@ -83,30 +83,3 @@
             <p>I am a dedicated networking professional with over two years of hands-on experience in networking and virtualization. Currently, I am in my final semester of the Computer Systems Technician program at George Brown College. Throughout my studies, I have gained valuable insights from my instructors and practical experience in the field, which has further solidified my skills and knowledge in networking technologies.</p>
         </section>
         <section id="Github">
-            <h2>GitHub</h2>
-            <p>Check out my projects on <a href="https://github.com/eduloor17" target="_blank">GitHub</a>.</p>
-        </section>
-        <section id="Linkedin">
-            <h2>LinkedIn</h2>
-            <p>Connect with me on <a href="https://www.linkedin.com/in/eduardojloor/" target="_blank">LinkedIn</a>.</p>
-        </section>
-    </div>
-    <footer>
-        <p>&copy; 2025 Eduardo Loor. All rights reserved.</p>
-    </footer>
-
-    <script>
-        let lastScrollTop = 0;
-        const header = document.getElementById("header");
-        window.addEventListener("scroll", function() {
-            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            if (scrollTop > lastScrollTop) {
-                header.style.top = "-80px"; // Hide header on scroll down
-            } else {
-                header.style.top = "0"; // Show header on scroll up
-            }
-            lastScrollTop = scrollTop;
-        });
-    </script>
-</body>
-</html>
