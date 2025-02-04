@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git & GitHub Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        #quiz-container {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        #question {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <h2>Git & GitHub Quiz</h2>
+    <p id="question"></p>
+    <input type="text" id="answer" placeholder="Type your answer...">
+    <button onclick="checkAnswer()">Submit</button>
+    <p id="result"></p>
+</div>
+
+<script>
+    const questions = [
+        { question: "What command initializes a new Git repository?", answer: "git init" },
+        { question: "What command stages all changes for the next commit?", answer: "git add ." },
+        { question: "What command commits changes with a message?", answer: "git commit -m" },
+        { question: "What command displays the current status of your Git repository?", answer: "git status" },
+        { question: "What command pushes changes to a remote repository?", answer: "git push" },
+        { question: "What command fetches and merges changes from a remote repository?", answer: "git pull" },
+        { question: "What command creates a new branch in Git?", answer: "git branch" },
+        { question: "What command switches to another branch?", answer: "git checkout" },
+        { question: "What is the default branch name in a new Git repository?", answer: "main" }
+    ];
+
+    let currentQuestionIndex = 0;
+
+    function showQuestion() {
+        if (currentQuestionIndex < questions.length) {
+            document.getElementById("question").innerText = questions[currentQuestionIndex].question;
+            document.getElementById("answer").value = "";
+            document.getElementById("result").innerText = "";
+        } else {
+            document.getElementById("quiz-container").innerHTML = "<h2>🎉 Congratulations! You completed the Git & GitHub quiz! 🚀</h2>";
+        }
+    }
+
+    function checkAnswer() {
+        let userAnswer = document.getElementById("answer").value.trim().toLowerCase();
+        let correctAnswer = questions[currentQuestionIndex].answer.toLowerCase();
+
+        if (userAnswer === correctAnswer) {
+            currentQuestionIndex++;
+            showQuestion();
+        } else {
+            document.getElementById("quiz-container").innerHTML = "<h2>❌ Wrong answer! The quiz has ended. Try again next time!</h2>";
+        }
+    }
+
+    showQuestion();
+</script>
+
+</body>
+</html>
