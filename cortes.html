@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimización de Cortes de Vidrio</title>
+    <style>
+        .container { margin: 20px; }
+        .sheet-container {
+            margin: 20px;
+            display: inline-block;
+            text-align: center;
+        }
+        canvas { 
+            border: 1px solid #000; 
+            display: block;
+        }
+        .sheet-label {
+            font-family: Arial;
+            font-size: 14px;
+            color: #333;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Optimización de Cortes de Vidrio</h1>
+        <label>Plancha (mm): <input type="number" id="sheetWidth" value="330">x<input type="number" id="sheetHeight" value="214"></label><br><br>
+        <label>Cortes (ejemplo: 3 74x201, 1 120x74, 1 100x74): <input type="text" id="cuts" value="3 74x201, 1 120x74, 1 100x74"></label><br><br>
+        <button onclick="calculate()">Calcular</button>
+        <div id="result"></div>
+        <div id="canvases"></div>
+    </div>
+
+    <script>
+        function calculate() {
+            const sheet = {
+                width: parseInt(document.getElementById('sheetWidth').value),
+                height: parseInt(document.getElementById('sheetHeight').value)
+            };
+            
+            // Procesar cortes
+            const cuts = document.getElementById('cuts').value.split(',')
+                .map(str => {
+                    const [qty, size] = str.trim().split(' ');
+                    const [w, h] = size.split('x').map(Number);
+                    return Array(parseInt(qty)).fill().map(() => ({ 
+                        sizes: [[w, h], [h, w]],
+                        area: w * h
+                    }));
+                }).flat();
+
+            // Ordenar por área descendente
+            cuts.sort((a, b) => b.area - a.area);
+
+            // Algoritmo optimizado
+            const sheets = [];
+            while (cuts.length > 0) {
+                let sheetCuts = [];
+                let freeRects = [{ x: 0, y: 0, width: sheet.width, height: sheet.height }];
+
+                for (let i = 0; i < cuts.length; i++) {
+                    const cut = cuts[i];
+                    let bestFit = null;
+
+                    // Buscar espacio en todas las áreas libres
+                    for (const rect of freeRects) {
+                        for (const [w, h] of cut.sizes) {
+                            if (w <= rect.width && h <= rect.height) {
+                                bestFit = { rect, w, h };
+                                break;
+                            }
+                        }
+                        if (bestFit) break;
+                    }
+
+                    if (bestFit) {
+                        sheetCuts.push({
+                            x: bestFit.rect.x,
+                            y: bestFit.rect.y,
+                            width: bestFit.w,
+                            height: bestFit.h
+                        });
+
+                        // Dividir el espacio restante
+                        const newRects = [];
+                        if (bestFit.rect.width > bestFit.w) {
+                            newRects.push({
+                                x: bestFit.rect.x + bestFit.w,
+                                y: bestFit.rect.y,
+                                width: bestFit.rect.width - bestFit.w,
+                                height: bestFit.rect.height
+                            });
+                        }
+                        if (bestFit.rect.height > bestFit.h) {
+                            newRects.push({
+                                x: bestFit.rect.x,
+                                y: bestFit.rect.y + bestFit.h,
+                                width: bestFit.rect.width,
+                                height: bestFit.rect.height - bestFit.h
+                            });
+                        }
+
+                        freeRects = [...newRects, ...freeRects.filter(r => r !== bestFit.rect)];
+                        cuts.splice(i, 1);
+                        i--;
+                    }
+                }
+
+                sheets.push(sheetCuts);
+            }
+
+            document.getElementById('result').innerHTML = `Planchas necesarias: ${sheets.length}`;
+            renderSheets(sheets, sheet);
+        }
+
+        function renderSheets(sheets, sheet) {
+            const container = document.getElementById('canvases');
+            container.innerHTML = '';
+            
+            sheets.forEach((cuts, index) => {
+                const sheetDiv = document.createElement('div');
+                sheetDiv.className = 'sheet-container';
+
+                // Crear canvas
+                const canvas = document.createElement('canvas');
+                canvas.width = sheet.width;
+                canvas.height = sheet.height;
+                const ctx = canvas.getContext('2d');
+                
+                // Dibujar fondo blanco
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(0, 0, sheet.width, sheet.height);
+                
+                // Dibujar cortes
+                ctx.strokeStyle = '#000';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+                
+                cuts.forEach(cut => {
+                    ctx.fillStyle = `hsl(${Math.random() * 360}, 80%, 90%)`;
+                    ctx.fillRect(cut.x, cut.y, cut.width, cut.height);
+                    ctx.strokeRect(cut.x, cut.y, cut.width, cut.height);
+                    ctx.fillStyle = '#000';
+                    ctx.fillText(
+                        `${cut.width}x${cut.height}`, 
+                        cut.x + cut.width/2, 
+                        cut.y + cut.height/2
+                    );
+                });
+
+                // Etiqueta de medidas fuera del canvas
+                const label = document.createElement('div');
+                label.className = 'sheet-label';
+                label.textContent = `Plancha ${index + 1}: ${sheet.width}mm x ${sheet.height}mm`;
+
+                sheetDiv.appendChild(canvas);
+                sheetDiv.appendChild(label);
+                container.appendChild(sheetDiv);
+            });
+        }
+    </script>
+</body>
+</html>
